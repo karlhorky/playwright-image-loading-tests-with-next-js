@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Logger from './Logger';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Logger />
+        {children}
+      </body>
     </html>
   );
 }
