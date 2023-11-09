@@ -25,10 +25,15 @@ Exploration of `img.complete` and `img.naturalWidth` and see what the detection,
 <Image src="next.svg" alt="image" width="{300}" height="{300}" />
 ```
 
+The following is the console output from the test run for `img.complete` and `img.naturalWidth`:
+
+`c`: complete with `true` or `false`
+`nW`: naturalWidth with `0` or `1+` (1+ means `> 0`)
+
 ```
-c: f nw: 0
-c: t nw: 1+
-c: t nw: 1+
+c: f nW: 0
+c: t nW: 1+
+c: t nW: 1+
 ...
 ```
 
@@ -47,9 +52,9 @@ await expect(page.locator('img')).not.toHaveJSProperty('naturalWidth', 0);
 ```
 
 ```
-c: f nw: 0
-c: t nw: 1+
-c: t nw: 1+
+c: f nW: 0
+c: t nW: 1+
+c: t nW: 1+
 ...
 ```
 
@@ -78,9 +83,9 @@ await expect(page.locator('img')).not.toHaveJSProperty('naturalWidth', 0);
 ```
 
 ```
-c: f nw: 0
-c: t nw: 0
-c: t nw: 0
+c: f nW: 0
+c: t nW: 0
+c: t nW: 0
 ...
 ```
 
@@ -103,9 +108,9 @@ await expect(page.locator('img')).not.toHaveJSProperty('naturalWidth', 0);
 ```
 
 ```
-c: f nw: 0
-c: t nw: 0
-c: t nw: 0
+c: f nW: 0
+c: t nW: 0
+c: t nW: 0
 ...
 ```
 
@@ -124,20 +129,20 @@ await expect(page.locator('img')).not.toHaveJSProperty('naturalWidth', 0);
 ### 5. Single image: image loads unsuccessfully (host unreachable)
 
 ```js
-<Image src="/image" alt="image" width={300} height={300} />
+<Image src="https://i/img.jpg" alt="image" width={300} height={300} />
 ```
 
 ```
-c: f nw: 0
-c: t nw: 0
-c: t nw: 0
+c: f nW: 0
+c: t nW: 0
+c: t nW: 0
 ...
 ```
 
 The Playwright test below for for `img.naturalWidth` fails, because the is broken (host unreachable) but reports `img.complete = true`.
 
 ```
-Failed to load resource: the server responded with a status of 400 (Bad Request)
+Failed to load resource: the server responded with a status of 500 (Internal Server Error)
 ```
 
 ```ts
@@ -166,9 +171,9 @@ await expect(page.locator('img')).not.toHaveJSProperty('naturalWidth', 0);
 ```
 
 ```
-c: f f f f f f f nw: 0 0 0 0 0 0 0
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 1+
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 1+
+c: f f f f f f f nW: 0 0 0 0 0 0 0
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 1+
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 1+
 ...
 ```
 
@@ -201,13 +206,13 @@ for (const img of await page.getByRole('img').all()) {
 ```
 
 ```
-c: f f f f f f f nw: 0 0 0 0 0 0 0
-c: t t t f f f f nw: 1+ 1+ 1+ 0 0 0 0
-c: t t t t f f f nw: 1+ 1+ 1+ 1+ 0 0 0
-c: t t t t t f f nw: 1+ 1+ 1+ 1+ 1+ 0 0
-c: t t t t t t f nw: 1+ 1+ 1+ 1+ 1+ 1+ 0
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 1+
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 1+
+c: f f f f f f f nW: 0 0 0 0 0 0 0
+c: t t t f f f f nW: 1+ 1+ 1+ 0 0 0 0
+c: t t t t f f f nW: 1+ 1+ 1+ 1+ 0 0 0
+c: t t t t t f f nW: 1+ 1+ 1+ 1+ 1+ 0 0
+c: t t t t t t f nW: 1+ 1+ 1+ 1+ 1+ 1+ 0
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 1+
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 1+
 ...
 ```
 
@@ -265,9 +270,9 @@ for (const img of await page.getByRole('img').all()) {
 ```
 
 ```
-c: f f f f f f f nw: 0 0 0 0 0 0 0
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 1+
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 1+
+c: f f f f f f f nW: 0 0 0 0 0 0 0
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 1+
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 1+
 ...
 ```
 
@@ -300,10 +305,10 @@ for (const img of await page.getByRole('img').all()) {
 ```
 
 ```
-c: f f f f f f f nw: 0 0 0 0 0 0 0
-c: f t t t t t t nw: 0 1+ 1+ 1+ 1+ 1+ 1+
-c: t t t t t t t nw: 0 1+ 1+ 1+ 1+ 1+ 1+
-c: t t t t t t t nw: 0 1+ 1+ 1+ 1+ 1+ 1+
+c: f f f f f f f nW: 0 0 0 0 0 0 0
+c: f t t t t t t nW: 0 1+ 1+ 1+ 1+ 1+ 1+
+c: t t t t t t t nW: 0 1+ 1+ 1+ 1+ 1+ 1+
+c: t t t t t t t nW: 0 1+ 1+ 1+ 1+ 1+ 1+
 ...
 ```
 
@@ -340,10 +345,10 @@ for (const img of await page.getByRole('img').all()) {
 ```
 
 ```
-c: f f f f f f f nw: 0 0 0 0 0 0 0
-c: t t t t t t f nw: 1+ 1+ 1+ 1+ 1+ 1+ 0
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 0
-c: t t t t t t t nw: 1+ 1+ 1+ 1+ 1+ 1+ 0
+c: f f f f f f f nW: 0 0 0 0 0 0 0
+c: t t t t t t f nW: 1+ 1+ 1+ 1+ 1+ 1+ 0
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 0
+c: t t t t t t t nW: 1+ 1+ 1+ 1+ 1+ 1+ 0
 ...
 ```
 
@@ -380,9 +385,9 @@ for (const img of await page.getByRole('img').all()) {
 ```
 
 ```
-c: f f f f f f f nw: 0 0 0 0 0 0 0
-c: t t t t t t t nw: 0 0 0 0 0 0 0
-c: t t t t t t t nw: 0 0 0 0 0 0 0
+c: f f f f f f f nW: 0 0 0 0 0 0 0
+c: t t t t t t t nW: 0 0 0 0 0 0 0
+c: t t t t t t t nW: 0 0 0 0 0 0 0
 ...
 ```
 
@@ -404,33 +409,33 @@ for (const img of await page.getByRole('img').all()) {
 
 ```js
 <div>
-  <Image src="/image" alt="image" width={300} height={300} />
+  <Image src="https://i/img.jpg" alt="image" width={300} height={300} />
   <br />
-  <Image src="/image" alt="image" width={300} height={300} />
+  <Image src="https://i/img.jpg" alt="image" width={300} height={300} />
   <br />
-  <Image src="/image" alt="image" width={300} height={300} />
+  <Image src="https://i/img.jpg" alt="image" width={300} height={300} />
   <br />
-  <Image src="/image" alt="image" width={300} height={300} />
+  <Image src="https://i/img.jpg" alt="image" width={300} height={300} />
   <br />
-  <Image src="/image" alt="image" width={300} height={300} />
+  <Image src="https://i/img.jpg" alt="image" width={300} height={300} />
   <br />
-  <Image src="/image" alt="image" width={300} height={300} />
+  <Image src="https://i/img.jpg" alt="image" width={300} height={300} />
   <br />
-  <Image src="/image" alt="image" width={300} height={300} />
+  <Image src="https://i/img.jpg" alt="image" width={300} height={300} />
 </div>
 ```
 
 ```
-c: f f f f f f f nw: 0 0 0 0 0 0 0
-c: t t t t t t t nw: 0 0 0 0 0 0 0
-c: t t t t t t t nw: 0 0 0 0 0 0 0
+c: f f f f f f f nW: 0 0 0 0 0 0 0
+c: t t t t t t t nW: 0 0 0 0 0 0 0
+c: t t t t t t t nW: 0 0 0 0 0 0 0
 ...
 ```
 
 The Playwright test below for `img.loaded` fails, because all images are broken (host unreachable) but reports `img.complete = 'true'`
 
 ```
-Failed to load resource: the server responded with a status of 400 (Bad Request)
+Failed to load resource: the server responded with a status of 500 (Internal Server Error)
 ```
 
 ```ts
